@@ -62,27 +62,31 @@ def delete_student():
             print("Deletion cancelled.")
     else:
         print("Student not found.")
-while True:
-    print("\n--- Student Record System ---")
-    print("1. Add student")
-    print("2. View students")
-    print("3. Search Student")
-    print("4. Update student")
-    print("5. Delete student")
-    print("6. Exit")
-    choice = input("choose an option:").strip()
-    if choice == "1":
-        add_student()
-    elif choice == "2":
-        view_students()
-    elif choice == "3":
-        search_student()
-    elif choice == "4":
-        update_student()
-    elif choice == "5":
-        delete_student()
-    elif choice == "6":
-        print("Goodbye!")
-        break
-    else:
-        print("Invalide choice!")
+def main():
+    while True:
+        print("\n--- Student Record System ---")
+        print("1. Add student")
+        print("2. View students")
+        print("3. Search Student")
+        print("4. Update student")
+        print("5. Delete student")
+        print("6. Exit")
+        choice = input("choose an option:").strip()
+        if choice == "1":
+            add_student()
+        elif choice == "2":
+            view_students()
+        elif choice == "3":
+            search_student()
+        elif choice == "4":
+            update_student()
+        elif choice == "5":
+            delete_student()
+        elif choice == "6":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice!")
+        pass
+if __name__ == "__main__":
+    main()
