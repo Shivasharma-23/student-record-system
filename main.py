@@ -50,13 +50,26 @@ def update_student():
         print("Student Updated successfully!")
     else:
         print("Student not found.")
+def delete_student():
+    student_id = input("Enter student ID to delete:").strip()
+    if student_id in students:
+        confirm = input(f"Are you sure you want to delete student {students[student_id]}? (yes/no):").strip().lower()
+        if confirm == "yes":
+            del students[student_id]
+            save_students()
+            print("Student deleted successfully!")
+        else:
+            print("Deletion cancelled.")
+    else:
+        print("Student not found.")
 while True:
     print("\n--- Student Record System ---")
     print("1. Add student")
     print("2. View students")
     print("3. Search Student")
     print("4. Update student")
-    print("5. Exit")
+    print("5. Delete student")
+    print("6. Exit")
     choice = input("choose an option:").strip()
     if choice == "1":
         add_student()
@@ -67,6 +80,8 @@ while True:
     elif choice == "4":
         update_student()
     elif choice == "5":
+        delete_student()
+    elif choice == "6":
         print("Goodbye!")
         break
     else:
