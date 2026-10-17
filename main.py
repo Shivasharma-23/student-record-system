@@ -31,17 +31,27 @@ def view_students():
         return
     for student_id, name in students.items():
         print(f"ID: {student_id}|Name: {name}")
+def search_student():
+    student_id = input("Enter student ID To search: ").strip()
+    if student_id in students:
+        print("Student found!")
+        print(f"ID: {student_id} | Name: {students[student_id]}")
+    else:
+        print("Student not found.")
 while True:
     print("\n--- Student Record System ---")
     print("1. Add student")
     print("2. View students")
-    print("3. Exit")
+    print("3. Search Student")
+    print("4. Exit")
     choice = input("choose an option:").strip()
     if choice == "1":
         add_student()
     elif choice == "2":
         view_students()
     elif choice == "3":
+        search_student()
+    elif choice == "4":
         print("Goodbye!")
         break
     else:
