@@ -38,12 +38,25 @@ def search_student():
         print(f"ID: {student_id} | Name: {students[student_id]}")
     else:
         print("Student not found.")
+def update_student():
+    student_id = input("Enter student ID to update:").strip()
+    if student_id in students:
+        new_name = input("Enter new student name:").strip()
+        if not new_name:
+            print("Name cannot be empty.")
+            return
+        students[student_id] = new_name
+        save_students()
+        print("Student Updated successfully!")
+    else:
+        print("Student not found.")
 while True:
     print("\n--- Student Record System ---")
     print("1. Add student")
     print("2. View students")
     print("3. Search Student")
-    print("4. Exit")
+    print("4. Update student")
+    print("5. Exit")
     choice = input("choose an option:").strip()
     if choice == "1":
         add_student()
@@ -52,6 +65,8 @@ while True:
     elif choice == "3":
         search_student()
     elif choice == "4":
+        update_student()
+    elif choice == "5":
         print("Goodbye!")
         break
     else:
