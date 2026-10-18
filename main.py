@@ -2,10 +2,16 @@ import json
 import os
 FILE_NAME ="students.json"
 def load_students():
-    if os.path.exists(FILE_NAME):
-        with open(FILE_NAME,"r") as file:
-            return json.load(file)
-    return{}
+    if not os.path.exists(FILE_NAME):
+        return {}
+    try:
+        with open(FILE_NAME, "r", encoding="utf-8") as file:
+            data = json.load(file)
+    except json.JSONDecodeError as error:
+        raise ValueError("Student data file contains invalide JSON.") from error
+    if not isinstance(data,dict):
+        raise ValueError("student data must be a JSON object.")
+    return data
 students = load_students()
 def save_students():
     with open(FILE_NAME, "w") as file:
