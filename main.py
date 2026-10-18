@@ -1,4 +1,12 @@
 import student_manager
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(levelname)s: %(message)s")
+logging.info("Student added successfully")
+logging.warning("Student ID already exists")
+logging.error("Unable to save student data")
 FILE_NAME = student_manager.FILE_NAME
 students = student_manager.load_students()
 def add_student():
@@ -7,7 +15,7 @@ def add_student():
         print("Student ID cannot be empty.")
         return
     if student_id in students:
-        print("Student ID already exists!")
+        logging.warning("Student ID already exists")
         return
     name = input("Enter student name:").strip()
     if not name:
@@ -15,7 +23,7 @@ def add_student():
         return
     students[student_id] = name
     student_manager.save_students(students)
-    print("student added successfully!")
+    logging.info("Student added successfully")
 def view_students():
     if not students:
         print("No students found.")
@@ -38,7 +46,7 @@ def update_student():
             return
         students[student_id] = new_name
         student_manager.save_students(students)
-        print("Student Updated successfully!")
+        logging.info("Student updated successfully!")
     else:
         print("Student not found.")
 def delete_student():
@@ -48,7 +56,7 @@ def delete_student():
         if confirm == "yes":
             del students[student_id]
             student_manager.save_students(students)
-            print("Student deleted successfully!")
+            logging.info("Student deleted successfully!")
         else:
             print("Deletion cancelled.")
     else:
