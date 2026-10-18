@@ -4,10 +4,8 @@ import os
 import tempfile
 import unittest
 from unittest.mock import patch
-
+import student_manager
 import main
-
-
 class TestStudentManagement(unittest.TestCase):
 
     def setUp(self):
@@ -19,10 +17,12 @@ class TestStudentManagement(unittest.TestCase):
         main.FILE_NAME = os.path.join(
             self.temp_dir.name, "test_students.json"
         )
+        student_manager.FILE_NAME = main.FILE_NAME
         main.students = {}
 
     def tearDown(self):
         main.FILE_NAME = self.original_file
+        student_manager.FILE_NAME = self.original_file
         main.students = self.original_students
         self.temp_dir.cleanup()
 

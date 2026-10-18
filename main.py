@@ -1,21 +1,6 @@
-import json
-import os
-FILE_NAME ="students.json"
-def load_students():
-    if not os.path.exists(FILE_NAME):
-        return {}
-    try:
-        with open(FILE_NAME, "r", encoding="utf-8") as file:
-            data = json.load(file)
-    except json.JSONDecodeError as error:
-        raise ValueError("Student data file contains invalide JSON.") from error
-    if not isinstance(data,dict):
-        raise ValueError("student data must be a JSON object.")
-    return data
-students = load_students()
-def save_students():
-    with open(FILE_NAME, "w") as file:
-        json.dump(students, file, indent=4)
+import student_manager
+FILE_NAME = student_manager.FILE_NAME
+students = student_manager.load_students()
 def add_student():
     student_id = input("Enter student ID:").strip()
     if not student_id:
@@ -29,7 +14,7 @@ def add_student():
         print("Name cannot be empty.")
         return
     students[student_id] = name
-    save_students()
+    student_manager.save_students(students)
     print("student added successfully!")
 def view_students():
     if not students:
@@ -52,7 +37,7 @@ def update_student():
             print("Name cannot be empty.")
             return
         students[student_id] = new_name
-        save_students()
+        student_manager.save_students(students)
         print("Student Updated successfully!")
     else:
         print("Student not found.")
@@ -62,7 +47,7 @@ def delete_student():
         confirm = input(f"Are you sure you want to delete student {students[student_id]}? (yes/no):").strip().lower()
         if confirm == "yes":
             del students[student_id]
-            save_students()
+            student_manager.save_students(students)
             print("Student deleted successfully!")
         else:
             print("Deletion cancelled.")

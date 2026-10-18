@@ -4,7 +4,7 @@ import os
 import tempfile
 import unittest
 from unittest.mock import patch
-
+import student_manager
 import main
 
 
@@ -14,8 +14,8 @@ class TestLoadStudents(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             path = os.path.join(folder, "missing.json")
 
-            with patch.object(main, "FILE_NAME", path):
-                self.assertEqual(main.load_students(), {})
+            with patch.object(student_manager, "FILE_NAME", path):
+                self.assertEqual(student_manager.load_students(), {})
 
     def test_valid_json_loads_students(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -24,9 +24,9 @@ class TestLoadStudents(unittest.TestCase):
             with open(path, "w", encoding="utf-8") as file:
                 json.dump({"101": "Rahul"}, file)
 
-            with patch.object(main, "FILE_NAME", path):
+            with patch.object(student_manager, "FILE_NAME", path):
                 self.assertEqual(
-                    main.load_students(),
+                    student_manager.load_students(),
                     {"101": "Rahul"}
                 )
 
@@ -37,9 +37,9 @@ class TestLoadStudents(unittest.TestCase):
             with open(path, "w", encoding="utf-8") as file:
                 file.write("{broken data")
 
-            with patch.object(main, "FILE_NAME", path):
+            with patch.object(student_manager, "FILE_NAME", path):
                 with self.assertRaises(ValueError):
-                    main.load_students()
+                    student_manager.load_students()
 
     def test_json_list_raises_error(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -48,9 +48,9 @@ class TestLoadStudents(unittest.TestCase):
             with open(path, "w", encoding="utf-8") as file:
                 json.dump([], file)
 
-            with patch.object(main, "FILE_NAME", path):
+            with patch.object(student_manager, "FILE_NAME", path):
                 with self.assertRaises(ValueError):
-                    main.load_students()
+                    student_manager.load_students()
 
 
 if __name__ == "__main__":
