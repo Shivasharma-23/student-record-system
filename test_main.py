@@ -34,6 +34,18 @@ class TestStudentManagement(unittest.TestCase):
         with open(main.FILE_NAME, "r") as file:
             saved = json.load(file)
         self.assertEqual(saved["101"], "Rahul")
+    
+    def test_add_student_save_failure(self):
+        with patch("builtins.input", side_effect=["999", "Zoro"]):
+            with patch(
+                "main.student_manager.save_students",
+                 side_effect=OSError("Disk error")
+           ):
+                with patch("builtins.print") as mock_print:
+                    main.add_student()
+
+        self.assertNotIn("999", main.students)
+        mock_print.assert_any_call("Unable to save student data.")
 
     def test_duplicate_student_id(self):
         main.students["101"] = "Rahul"
@@ -67,6 +79,40 @@ class TestStudentManagement(unittest.TestCase):
             saved = json.load(file)
 
         self.assertEqual(saved["101"], "Aman")
+    
+    def test_update_student_save_failure(self):
+        main.students["101"] = "Rahul"
+
+        with patch(
+            "builtins.input",
+            side_effect=["101", "Zoro"]
+        ):
+            with patch(
+                "main.student_manager.save_students",
+                side_effect=OSError("Disk error")
+            ):
+                with patch("builtins.print") as mock_print:
+                    main.update_student()
+
+        self.assertEqual(main.students["101"], "Rahul")
+        mock_print.assert_any_call("Unable to save student data.")
+    
+    def test_delete_student_save_failure(self):
+        main.students["101"] = "Rahul"
+
+        with patch(
+            "builtins.input",
+            side_effect=["101", "yes"]
+        ):
+            with patch(
+                "main.student_manager.save_students",
+                side_effect=OSError("Disk error")
+            ):
+                with patch("builtins.print") as mock_print:
+                    main.delete_student()
+
+        self.assertEqual(main.students["101"], "Rahul")
+        mock_print.assert_any_call("Unable to save student data.")
 
     def test_delete_student(self):
         main.students["101"] = "Rahul"
@@ -97,6 +143,25 @@ class TestStudentManagement(unittest.TestCase):
 
         mock_print.assert_any_call("Name cannot be empty.")
         self.assertNotIn("105", main.students)
+
+    def test_update_empty_name(self):
+        main.students["101"] = "Rahul"
+        with patch("builtins.input", side_effect=["101", ""]):
+            with patch("builtins.print") as mock_print:
+                main.update_student()
+
+        mock_print.assert_any_call("Name cannot be empty.")
+        self.assertEqual(main.students["101"], "Rahul")
+
+
+    def test_update_empty_student_id(self):
+        main.students["101"] = "Rahul"
+
+        with patch("builtins.input", return_value=""):
+            with patch("builtins.print") as mock_print:
+                main.update_student()
+        self.assertEqual(main.students["101"], "Rahul")
+        self.assertNotIn("", main.students)
 
 if __name__ == "__main__":
     unittest.main()

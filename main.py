@@ -4,9 +4,7 @@ import logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(levelname)s: %(message)s")
-logging.info("Student added successfully")
-logging.warning("Student ID already exists")
-logging.error("Unable to save student data")
+
 FILE_NAME = student_manager.FILE_NAME
 students = student_manager.load_students()
 def add_student():
@@ -22,8 +20,16 @@ def add_student():
         print("Name cannot be empty.")
         return
     students[student_id] = name
-    student_manager.save_students(students)
+
+    try:
+        student_manager.save_students(students)
+    except (OSError, ValueError) as error:
+        del students[student_id]
+        logging.error("Unable to save student data: %s", error)
+        print("Unable to save student data.")
+        return
     logging.info("Student added successfully")
+
 def view_students():
     if not students:
         print("No students found.")
@@ -38,29 +44,55 @@ def search_student():
     else:
         print("Student not found.")
 def update_student():
-    student_id = input("Enter student ID to update:").strip()
+    student_id = input("Enter student ID to update: ").strip()
     if student_id in students:
-        new_name = input("Enter new student name:").strip()
+        new_name = input("Enter new student name: ").strip()
         if not new_name:
             print("Name cannot be empty.")
             return
+        old_name = students[student_id]
         students[student_id] = new_name
-        student_manager.save_students(students)
-        logging.info("Student updated successfully!")
-    else:
-        print("Student not found.")
-def delete_student():
-    student_id = input("Enter student ID to delete:").strip()
-    if student_id in students:
-        confirm = input(f"Are you sure you want to delete student {students[student_id]}? (yes/no):").strip().lower()
-        if confirm == "yes":
-            del students[student_id]
+        try:
             student_manager.save_students(students)
-            logging.info("Student deleted successfully!")
-        else:
-            print("Deletion cancelled.")
+        except (OSError, ValueError) as error:
+            students[student_id] = old_name
+            logging.error("Unable to save student data: %s", error)
+            print("Unable to save student data.")
+            return
+        logging.info("Student Updated successfully!")
     else:
         print("Student not found.")
+        
+
+def delete_student():
+    student_id = input("Enter student ID to delete: ").strip()
+
+    if student_id not in students:
+        print("Student not found.")
+        return
+
+    confirm = input(
+        f"Are you sure you want to delete student "
+        f"{students[student_id]}? (yes/no): "
+    ).strip().lower()
+
+    if confirm != "yes":
+        print("Deletion cancelled.")
+        return
+
+    deleted_name = students.pop(student_id)
+
+    try:
+        student_manager.save_students(students)
+    except (OSError, ValueError) as error:
+        students[student_id] = deleted_name
+        logging.error("Unable to save student data: %s", error)
+        print("Unable to save student data.")
+        return
+
+    logging.info("Student deleted successfully!")
+
+
 def main():
     while True:
         print("\n--- Student Record System ---")
