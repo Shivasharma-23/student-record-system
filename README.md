@@ -1,31 +1,100 @@
 # Student Record Management System
-A beginner-friendly command-line application built with Python
-to manage student records.
+
+A beginner-friendly command-line application built with Python to manage student records using JSON file storage.
 
 ## Features
-- Add student records
+
+- Add new student records
 - View all students
-- Search students by ID
+- Search students by student ID
 - Update student details
-- Delete student records
-- Store records in a JSON file
+- Delete student records with confirmation
+- Validate empty inputs and duplicate student IDs
+- Store student records in a JSON file
+- Handle storage errors safely
+- Log application events and errors
+- Automated tests using Python's `unittest` framework
 
 ## Technologies Used
-- Python
-- JSON
-- Git
-- GitHub
+
+- **Python 3**
+- **JSON** for data persistence
+- **unittest** for automated testing
+- **unittest.mock** for simulating user input and storage failures
+- **Git and GitHub** for version control
 
 ## Requirements
+
 - Python 3 installed
+- Git (optional, for cloning the repository)
 
-## How to Run
-1. Clone or download this repository.
-2. Open the project folder in a terminal.
-3. Run:
+No third-party Python packages are required.
 
-   python main.py
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Shivasharma-23/student-record-system.git
+```
+
+### 2. Open the project folder
+
+```bash
+cd student-record-system
+```
+
+### 3. Run the application
+
+```bash
+python main.py
+```
+
+### 4. Run the automated tests
+
+```bash
+python -m unittest discover -v
+```
 
 ## Data Storage
-Student records are stored in students.json.
-The file is created when a student record is saved.
+
+Student records are stored locally in `students.json`. The application loads saved records when it starts and saves changes when student records are modified.
+
+The `students.json` file is excluded from Git so that local student data is not uploaded to the repository.
+
+## Project Structure
+
+```text
+student-record-system/
+├── main.py
+├── student_manager.py
+├── students.json
+├── test_main.py
+├── test_load_students.py
+├── test_basic.py
+├── README.md
+└── .gitignore
+```
+
+## Learning Outcomes
+
+This project demonstrates practical experience with:
+
+- Python functions and dictionaries
+- CRUD operations (Create, Read, Update, Delete)
+- JSON file handling
+- Input validation and exception handling
+- Logging
+- Automated unit testing
+- Git branching, commits, and GitHub
+
+## Future Improvements
+
+- Add a graphical user interface
+- Replace JSON storage with SQLite
+- Add more validation and automated tests
+
+## Author
+
+**Shiva Sharma**
+
