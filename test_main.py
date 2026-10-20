@@ -98,5 +98,24 @@ class TestStudentManagement(unittest.TestCase):
         mock_print.assert_any_call("Name cannot be empty.")
         self.assertNotIn("105", main.students)
 
+    def test_update_empty_name(self):
+        main.students["101"] = "Rahul"
+        with patch("builtins.input", side_effect=["101", ""]):
+            with patch("builtins.print") as mock_print:
+                main.update_student()
+
+        mock_print.assert_any_call("Name cannot be empty.")
+        self.assertEqual(main.students["101"], "Rahul")
+
+
+    def test_update_empty_student_id(self):
+        main.students["101"] = "Rahul"
+
+        with patch("builtins.input", return_value=""):
+            with patch("builtins.print") as mock_print:
+                main.update_student()
+        self.assertEqual(main.students["101"], "Rahul")
+        self.assertNotIn("", main.students)
+
 if __name__ == "__main__":
     unittest.main()
