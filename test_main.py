@@ -30,12 +30,9 @@ class TestStudentManagement(unittest.TestCase):
         with patch("builtins.input",
                    side_effect=["101", "Rahul"]):
             main.add_student()
-
         self.assertEqual(main.students["101"], "Rahul")
-
         with open(main.FILE_NAME, "r") as file:
             saved = json.load(file)
-
         self.assertEqual(saved["101"], "Rahul")
 
     def test_duplicate_student_id(self):
@@ -85,6 +82,21 @@ class TestStudentManagement(unittest.TestCase):
 
         self.assertNotIn("101", saved)
 
+    def test_empty_student_id(self):
+        with patch("builtins.input", side_effect=["", "Zoro"]):
+            with patch("builtins.print") as mock_print:
+                main.add_student()
+
+        mock_print.assert_any_call("Student ID cannot be empty.")
+        self.assertEqual(main.students, {})
+
+    def test_empty_student_name(self):
+        with patch("builtins.input", side_effect=["105", ""]):
+            with patch("builtins.print") as mock_print:
+                main.add_student()
+
+        mock_print.assert_any_call("Name cannot be empty.")
+        self.assertNotIn("105", main.students)
 
 if __name__ == "__main__":
     unittest.main()
