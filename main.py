@@ -4,9 +4,7 @@ import logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(levelname)s: %(message)s")
-logging.info("Student added successfully")
-logging.warning("Student ID already exists")
-logging.error("Unable to save student data")
+
 FILE_NAME = student_manager.FILE_NAME
 students = student_manager.load_students()
 def add_student():
