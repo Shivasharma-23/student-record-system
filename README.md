@@ -98,3 +98,35 @@ This project demonstrates practical experience with:
 
 **Shiva Sharma**
 
+
+## Demo
+
+The Student Record Management System runs in the terminal and supports:
+
+- Adding student records
+- Viewing saved students
+- Searching by student ID
+- Updating student details
+- Deleting records with confirmation
+
+Run the application using:
+
+```bash
+python main.py
+```
+
+## Example Output
+
+```text
+--- Student Record System ---
+1. Add student
+2. View students
+3. Search Student
+4. Update student
+5. Delete student
+6. Exit
+
+ID: 101 | Name: Monkey D Luffy
+ID: 102 | Name: Naruto
+ID: 103 | Name: Zoro
+```
