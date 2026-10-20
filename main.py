@@ -22,8 +22,16 @@ def add_student():
         print("Name cannot be empty.")
         return
     students[student_id] = name
-    student_manager.save_students(students)
+
+    try:
+        student_manager.save_students(students)
+    except (OSError, ValueError) as error:
+        del students[student_id]
+        logging.error("Unable to save student data: %s", error)
+        print("Unable to save student data.")
+        return
     logging.info("Student added successfully")
+
 def view_students():
     if not students:
         print("No students found.")
